@@ -1,8 +1,8 @@
 <?php
 //Verbindung mit DB herstellen
 	$host = 'localhost:3306';    
-	$conn = mysqli_connect($host, "system_user_vtc", "8rh98w23nrfubsediofnm<pbi9ufuoipbgiwtFFF","vtcmanager"); 
+	$conn = mysqli_connect($host, "joschua", "","vtcmanager_old"); 
 	if(! $conn ){  
-		die("2");  
+		die("Verbindung zur Datenbank (".$host." ist fehlgeschlagen.");  
 	} 
 ?>
