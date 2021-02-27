@@ -5,11 +5,7 @@ if(isset($_COOKIE['authWebToken']) && isset($_COOKIE['username'])) {
 	$authCode_cookie = $_COOKIE["authWebToken"]; 
 		
 	//Verbindung mit DB herstellen
-	$host = 'localhost:3306';    
-	$conn = mysqli_connect($host, "system_user_vtc", "8rh98w23nrfubsediofnm<pbi9ufuoipbgiwtFFF","vtcmanager"); 
-	if(! $conn ){  
-		die("Keine Verbindung möglich");  
-	}  
+	include '../../../home/connect_mysql.php';
 		
 	//Suche nach dem gleichen AuthCode
 	$sql = "SELECT * FROM authCode_table WHERE Token='$authCode_cookie'";
@@ -65,12 +61,7 @@ foreach ($_POST as $key => $value) {
             break;
     }
 }
-$host = 'localhost:3306';    
-$conn = mysqli_connect($host, "nwv_api_user", "paswdmysqlllol29193093KK","nwv_api");  
-if(! $conn )  
-{  
-  die("Keine Verbindung möglich");  
-}  
+include '../../../home/connect_auth_mysql.php';
 $passwdhsh = hash('sha256',$passwd);
 
 $sql = "SELECT * FROM user_data WHERE username='$user'";
@@ -92,8 +83,8 @@ if ($result->num_rows > 0) {
 if ($passwdhsh==$hash) {
 	mysqli_close($conn); 
 	$token = bin2hex(random_bytes(64)); 
-	$conn = mysqli_connect($host, "system_user_vtc", "8rh98w23nrfubsediofnm<pbi9ufuoipbgiwtFFF","vtcmanager"); 
-	$sql = "SELECT * FROM authCode_table WHERE Token='$token'";
+	include '../../../home/connect_mysql.php';
+	$sql = "SELECT * FROM authcode_table WHERE Token='$token'";
 	$result = $conn->query($sql);
 	if ($result->num_rows > 0) {
     // output data of each row
@@ -101,11 +92,10 @@ if ($passwdhsh==$hash) {
     }
 	$date = date('Y-m-d H:i:s');
 	$date = strtotime($date . ' +1 day');
-	$sql = "INSERT INTO authCode_table (User, Token, Expires)
+	$sql = "INSERT INTO authcode_table (User, Token, Expires)
 VALUES ('$user', '$token', NOW())";
 	if ($conn->query($sql) === TRUE) {
 	} else {
-		
 		die("authCode creat failed");
 	}
 } else {
