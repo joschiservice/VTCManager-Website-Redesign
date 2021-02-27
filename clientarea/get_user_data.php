@@ -6,14 +6,10 @@ if(isset($_COOKIE['authWebToken']) && isset($_COOKIE['username'])) {
 	$authCode_cookie = $_COOKIE["authWebToken"]; 
 		
 	//Verbindung mit DB herstellen
-	$host = 'localhost:3306';    
-	$conn = mysqli_connect($host, "system_user_vtc", "8rh98w23nrfubsediofnm<pbi9ufuoipbgiwtFFF","vtcmanager"); 
-	if(! $conn ){  
-		die("2");  
-	}  
+	include '../../home/connect_mysql.php'; 
 		
 	//Suche nach dem gleichen AuthCode
-	$sql = "SELECT * FROM authCode_table WHERE Token='$authCode_cookie'";
+	$sql = "SELECT * FROM authcode_table WHERE Token='$authCode_cookie'";
 	$result = $conn->query($sql);
 	if ($result->num_rows > 0) {
 		while($row = $result->fetch_assoc()) {
@@ -37,9 +33,9 @@ if(isset($_COOKIE['authWebToken']) && isset($_COOKIE['username'])) {
 		die("wrong owner detected");
 	}
 	//NWV
-	$conn2 = mysqli_connect($host, "nwv_api_user", "paswdmysqlllol29193093KK", "nwv_api");
+	include '../../home/connect_auth_mysql.php'; 
 	$sql = "SELECT * FROM user_data WHERE username='$username_cookie'"; 
-	$result = $conn2->query($sql);
+	$result = $conn->query($sql);
 
 	if ($result->num_rows > 0) {
 		// output data of each row
@@ -49,6 +45,7 @@ if(isset($_COOKIE['authWebToken']) && isset($_COOKIE['username'])) {
 	} else {
 		echo "0 results";
 	}
+	include '../../home/connect_mysql.php'; 
 	//Lade Benutzerdaten aus der DB
 	$sql = "SELECT * FROM user_data WHERE username='$username_cookie'";
 	$result = $conn->query($sql);

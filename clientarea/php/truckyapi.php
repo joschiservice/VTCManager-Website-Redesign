@@ -1,5 +1,5 @@
 <?php
-$json_trucky = file_get_contents("https://vtc.northwestvideo.de/api/web/traffic/data");
+$json_trucky = file_get_contents("http://localhost/api/web/traffic/data");
 $obj_trucky = json_decode($json_trucky);
 for($i=0; $i < 10; $i++) {
   echo '<a class="list-group-item list-group-item-action waves-effect elegant-color white-text">'.$obj_trucky->response[$i]->name;
